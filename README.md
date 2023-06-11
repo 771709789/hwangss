@@ -1,43 +1,83 @@
 # hwangss
 
-复制括号里面的内容
+#####################################################################
 
-1：（sudo -i）
+创建实例CentOS 7 - 在高级选项 - 选择粘贴cloud-init脚本 - root密码rootpasswd
 
-(最前面显示root@xxxx)
-注意第二步有新代码，可以用新代码
-2：（wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/YankeeBBR/master/bbr.sh && bash bbr.sh install）
+#!/bin/bash
+echo root:rootpasswd |sudo chpasswd root
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+sudo reboot
 
-(蓝底 窗口 选择 NO)
+#####################################################################
 
-以下是新代码。新代码和旧代码（视频中使用的）所安装的加速器不同，推荐安装新的
-因为视频里没有讲这一段所以我用了些图片
-2.1（wget --no-check-certificate https://github.com/iyuco/scripts/raw/master/bbr.sh
-chmod +x bbr.sh
-./bbr.sh）
+用户名
+opc
+获取root权限
+sudo -i
 
-2018-01-21 11 07 17
+#####################################################################
 
-这里回车
-2018-01-21 11 08 01
+更新 yum
+yum -y update
 
-按任意键继续
-2018-01-21 11 08 26
+查看内核
+uname -r
+# 内核版本 3.10.0-1062.12.1.el7.x86_64
 
-选择重启 Y
-这里会断开连接，大家可以关掉窗口再重新打开。
-3：（sudo -i）
+手动下载秋水 BBRPlus版内核
+wget https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/bbrplus/centos/7/kernel-4.14.129-bbrplus.rpm
 
-(最前面显示root@xxxx)
+手动安装内核
+yum -y install kernel-4.14.129-bbrplus.rpm
 
-4：（bash bbr.sh start）如果第二步用的新代码跳过这里。
+更新引导
+grub2-mkconfig -o /boot/grub2/grub.cfg
+grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
 
-5：（wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocksR.sh && chmod +x shadowsocksR.sh）
+列出系统开机启动项
+sudo awk -F\' '$1=="menuentry " {print i++ " : " $2}' /boot/efi/EFI/centos/grub.cfg
 
-6：（./shadowsocksR.sh）
+设置新版内核默认启动项
+grub2-set-default 0
 
-输入shadowsocks 密码
+重启
+reboot
 
-输入端口号
+开启 BBRPlus 及优化
+秋水一键脚本,选择7开启BBRPlus加速
+wget -N --no-check-certificate "https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+再次./tcp.sh运行脚本,选择10优化并重启完成
 
-其他一路回车
+检测 Bottleneck Bandwidth and RTT Plus 是否开启成功，输入
+sysctl net.ipv4.tcp_available_congestion_control
+
+如果返回值为：
+net.ipv4.tcp_available_congestion_control = bbrplus cubic reno
+则开启成功
+
+#####################################################################
+
+pcbind
+使用netstat -ntlp命令发现rpcbind监听了111端口,如担心安全可执行以下命令卸载禁用:
+
+systemctl stop rpcbind
+systemctl stop rpcbind.socket
+systemctl disable rpcbind
+systemctl disable rpcbind.socket
+
+oracle-cloud-agent
+卸载甲骨文云官方后台监控程序
+
+systemctl stop oracle-cloud-agent
+systemctl disable oracle-cloud-agent
+systemctl stop oracle-cloud-agent-updater
+systemctl disable oracle-cloud-agent-updater
+
+#####################################################################
+
+执行v2ray一键安装脚本
+https://github.com/233boy/v2ray/wiki/V2Ray%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E5%9B%BE%E6%96%87%E6%95%99%E7%A8%8B
+
+#####################################################################
