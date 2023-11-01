@@ -1,0 +1,15 @@
+ubuntu 22
+CIDR 0.0.0.0/0 all
+key2ppk name ubuntu
+#开放所有端口
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -F
+#Oracle自带的Ubuntu镜像默认设置了Iptable规则，关闭它
+apt-get purge netfilter-persistent
+reboot
+#或强制删除
+rm -rf /etc/iptables && reboot
+------------
+https://github.com/233boy/v2ray/wiki/V2Ray%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC
