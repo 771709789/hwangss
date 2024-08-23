@@ -81,3 +81,5 @@ systemctl disable oracle-cloud-agent-updater
 https://github.com/233boy/v2ray/wiki/V2Ray%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E5%9B%BE%E6%96%87%E6%95%99%E7%A8%8B
 
 #####################################################################
+
+https://hk.vless220924.top:19529/s/default/615d3c9ff7ef91fd9b3692a09c62b53b
