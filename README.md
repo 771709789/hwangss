@@ -83,3 +83,5 @@ https://github.com/233boy/v2ray/wiki/V2Ray%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E
 #####################################################################
 
 https://hk.vless220924.top:19529/s/default/615d3c9ff7ef91fd9b3692a09c62b53b
+#
+https://1d7c93c3.no-mad-world.club/link/sjUd4EZygPeOTojI?shadowrocket=1
